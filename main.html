@@ -1,0 +1,206 @@
+<style>
+body 
+	{
+	background-color: black;
+	}
+</style>
+
+
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/litegraph.css">
+	<script type="text/javascript" src="/static/litegraph.js"></script>
+</head>
+<body style='width:100%; height:100%'>
+<canvas id='mycanvas' width='1024' height='720' style='border: 1px solid'></canvas>
+<script>
+var graph = new LGraph();
+var canvas = new LGraphCanvas("#mycanvas", graph);
+
+/*
+
+
+
+
+*/
+
+
+
+function person_physical_attrs()
+	{
+  this.slider_widget = this.addWidget("slider","weight", 65, function(value, widget, node){ /* do something with the value */ }, { min: 35, max: 250} );
+  this.slider_widget = this.addWidget("slider","age", 20, function(value, widget, node){ /* do something with the value */ }, { min: 14, max: 120} );
+  this.slider_widget = this.addWidget("slider","height", 125, function(value, widget, node){ /* do something with the value */ }, { min: 100, max: 250} );
+  this.addWidget("combo","birth_gender", "male", empty_func, { values:["male","female"]} );	
+	}
+person_physical_attrs.title_color = "#e2f7cd";
+person_physical_attrs.title = "person_physical_attrs";
+LiteGraph.registerNodeType("codoplan_node/person_physical_attrs", person_physical_attrs );
+
+/*========================================*/
+function add_before_after(target)
+	{
+	target.addInput("before","number");
+	target.addOutput("after","number");	
+	}
+	
+	
+function empty_func()
+	{
+	}
+/*========================================*/
+function location_node()
+	{
+	this.addOutput("used in", "number");
+	this.addWidget("text","title", "no title");
+	this.addWidget("slider","LA", 45, empty_func, { min: -90, max: 90, precision: 1});
+	this.addWidget("slider","LONG", 45, empty_func, { min: -180, max: 180, precision: 1});
+	}
+	
+location_node.title_color = "#156643";
+location_node.title = "location_node";
+LiteGraph.registerNodeType("codoplan_node/location_node", location_node );
+
+/*========================================*/
+function go_to_location_by_car()
+	{
+	add_before_after(this);
+	this.addInput("where", "number");
+	}
+go_to_location_by_car.title_color = "#135438";
+go_to_location_by_car.title = "go_to_location_by_car";
+LiteGraph.registerNodeType("codoplan_node/go_to_location_by_car", go_to_location_by_car );
+
+
+function wake_up_time()
+	{
+	add_before_after(this);
+  this.slider_widget = this.addWidget("slider","hour", 6, empty_func, { min: 0, max: 23, precision: 1} );
+  this.slider_widget = this.addWidget("slider","minute", 0, empty_func, { min: 0, max: 59, precision: 1} );
+	}
+wake_up_time.title_color = "#425af5";
+wake_up_time.title = "wake_up_time";
+LiteGraph.registerNodeType("codoplan_node/wake_up_time", wake_up_time );
+
+
+function sleep_time()
+	{
+	add_before_after(this);
+  this.slider_widget = this.addWidget("slider","hour", 10, empty_func, { min: 0, max: 23, precision: 1} );
+  this.slider_widget = this.addWidget("slider","minute", 30, empty_func, { min: 0, max: 59, precision: 1} );
+	}
+	
+sleep_time.title_color = "#425af5";
+sleep_time.title = "sleep_time";
+
+LiteGraph.registerNodeType("codoplan_node/sleep_time", sleep_time );
+
+
+
+function eating()
+	{
+	add_before_after(this);
+	this.addInput("what", "number");
+	}
+	
+eating.title_color = "#425af5";
+eating.title = "eating";
+
+LiteGraph.registerNodeType("codoplan_node/eating", eating );
+
+
+
+function gym_seesion_start()
+	{
+	add_before_after(this);
+	}
+	
+gym_seesion_start.title_color = "#425af5";
+gym_seesion_start.title = "gym_seesion_start";
+
+LiteGraph.registerNodeType("codoplan_node/gym_seesion_start", gym_seesion_start );
+
+
+function gym_session_end()
+	{
+	add_before_after(this);
+	}
+	
+gym_session_end.title_color = "#425af5";
+gym_session_end.title = "gym_session_end";
+
+LiteGraph.registerNodeType("codoplan_node/gym_seesion_end", gym_session_end );
+
+/*========================================*/
+
+function food__fried_eggs()
+	{
+	this.addOutput("used in","number");
+	this.addWidget("number", "units", 1, empty_func, { min: 0, max: 100, step:1, precision: 1});
+	}
+	
+food__fried_eggs.title = "fried eggs";
+food__fried_eggs.title_color = "#ffa229";
+LiteGraph.registerNodeType("codoplan_food/food__fried_eggs", food__fried_eggs );
+
+
+/*========================================*/
+
+function leg_frontal_machine()
+	{
+	add_before_after(this);
+	this.addWidget("number" ,"weight", 2, empty_func, { min: 0, max: 100, step:1, precision: 1} );
+	this.addWidget("number" ,"repeats",10, empty_func, { min: 0, max: 30, precision: 1} );	
+	this.addWidget("number" ,"set_counts", 3, empty_func, { min: 0, max: 6, precision: 1} );	
+	this.addOutput("used in","number");
+	}
+leg_frontal_machine.title = "leg_frontal_machine";
+leg_frontal_machine.title_color = "#b03541";
+LiteGraph.registerNodeType("gym_moves/leg_frontal_machine", leg_frontal_machine);	
+
+
+
+function squat_machine_45deg()
+	{
+	add_before_after(this);
+	this.addWidget("number", "weight", 2, empty_func, { min: 0, max: 100, precision: 1} );
+	this.addWidget("number", "repeats", 10, empty_func, { min: 0, max: 30, precision: 1} );	
+	this.addWidget("number", "set_counts", 3, empty_func, { min: 0, max: 6, precision: 1} );	
+	this.addOutput("used in","number");
+	}
+squat_machine_45deg.title = "squat_machine_45deg";
+squat_machine_45deg.title_color = "#b03541";
+LiteGraph.registerNodeType("gym_moves/squat_machine_45deg", squat_machine_45deg);	
+
+
+function ankle_machine()
+	{
+	add_before_after(this);
+	this.addWidget("number", "weight", 2, empty_func, { min: 0, max: 100, precision: 1} );
+	this.addWidget("number", "repeats", 10, empty_func, { min: 0, max: 30, precision: 1} );	
+	this.addWidget("number", "set_counts", 3, empty_func, { min: 0, max: 6, precision: 1} );	
+	this.addOutput("used in","number");
+	}
+ankle_machine.title = "ankle_machine";
+ankle_machine.title_color = "#b03541";
+LiteGraph.registerNodeType("gym_moves/ankle_machine", ankle_machine);	
+
+
+
+
+function fore_arms_machine()
+	{
+	add_before_after(this);
+	this.addWidget("number", "weight", 2, empty_func, { min: 0, max: 100, precision: 1} );
+	this.addWidget("number", "repeats", 10, empty_func, { min: 0, max: 30, precision: 1} );	
+	this.addWidget("number", "set_counts", 3, empty_func, { min: 0, max: 6, precision: 1} );	
+	this.addOutput("used in","number");
+	}
+fore_arms_machine.title = "fore_arms_machine";
+fore_arms_machine.title_color = "#b03541";
+LiteGraph.registerNodeType("gym_moves/fore_arms_machine", fore_arms_machine);	
+
+graph.start()
+</script>
+</body>
+</html>
